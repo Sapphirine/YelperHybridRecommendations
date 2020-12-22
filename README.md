@@ -10,4 +10,4 @@ Our project goal was to build a hybrid recommendation system to recommend restau
 Above you can find our source code: 
 - restaurant_recommendation_algorithms: contains code for each of our filtering algorithms (ALS collaborative filtering, content-based filtering with categories, and content-based filtering with review text) as well as code that evaluates and processes our data
 - django_app: contains our Django webapp code that produces a visualization of the results from our recommendation algorithm
-- attempted_recommendation_algorithms: attempts at collaborative filtering using other methods (not evaluated or used for our final results)
+- attempted_collab_filtering_methods: attempts at collaborative filtering using other methods (not evaluated or used for our final results)
