@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<!-- Layout of head and body is intuitive and understandable -->
+<html lang="en">
+<head>
+  <title>Restaurant App Homepage</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+  	body {
+      font: 20px Montserrat, sans-serif;
+			line-height: 1.8;
+  	}
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+      background-color: #ffffff;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 750px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 5px;
+      background-color: #ffffff;
+			border-left-color: #e7e7e7;
+			border-left-width: 1px;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+    .form-inline {
+    	width: 100%;
+      position: relative;
+			left: 40%
+      right: 20%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+			background-color: #1abc9c
+    }
+    .form-group {
+			position: relative;
+			left: 0%;
+    	margin-left: 10px;
+      margin-right: 10px;
+    }
+    .btn btn-success {
+			position: relative;
+			left: 20%;
+    	margin-left: 10px;
+      margin-right: 10px;
+    }
+		.container-fluid {
+			padding-top: 2px;
+			padding-bottom: 2px;
+			}
+		.navbar {
+			padding-top: 0px;
+			padding-bottom: 0px;
+			border-radius: 0;
+			margin-top: 0px;
+			margin-bottom: 0px;
+			font-size: 15px;
+			letter-spacing: 1px;
+			background-color: #ffffff;
+		}
+		.navbar-brand {
+			width: 400px;
+			height: 66px;
+			float: left;
+			font-size:30px;
+			letter-spacing: 1px;
+			text-align: center;
+			color: black;
+			text-shadow: 2px 2px 4px #ffffff;
+			background-color: #ffffff;
+		}
+		#sbut {
+			background-color: #d2ded1; 
+			color: indigo;
+			text-shadow: 2px 2px 4px #ffffff;
+		.btn btn-success {
+			margin-bottom: 5px;
+		}
+		.inputForms {
+			margin-top: 30px;
+		}
+		.form-container {
+			margin-top: 30px;
+		}
+		#in_field {
+			color:black;
+		}
+		.btn-outline-success {
+			border: 2px solid red;
+		}
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Restaurant<br>Recommendation</a>
+    </div>
+		<div class="form-container">
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<form id="inbutton" class="inputForms" action="{% url 'real user' %}" method="get">
+							<input class="in_field" name ="query" type="text" placeholder="user ID">
+							<input class="in_field" name ="category" type="text" placeholder="Category(ies)">
+							<input class="in_field" name="lat" type="text" placeholder="Latitude">
+							<input class="in_field" name="long" type="text" placeholder="Longitude">
+							<button type = "submit" id="sbut" name = "button"><span class="glyphicon glyphicon-search"></span>Submit</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+  </div>
+</nav>
+
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-9 text-left"> 
+			<div id="maptitle" style="color:black; text-align: center;">Welcome.  Please use the Input Fields to Search for Top Restaurants.</div>
+      <table class="table table-condensed">
+				<thead>
+					<tr Style="Color: Black; font-size:12px; margin-top:10px;">
+						<th>USER_ID</th>
+						<td id="user_id"></td>
+						<th>CATEGORIES</th>
+						<td id="categories"></td>
+						<th>LOCATION (LAT/LONG)</th>
+						<td id="location"></td>
+					</tr>
+				</thead>
+			</table>
+      <div id="mapid" style="width: 900px; height: 600px;"></div>
+    </div>
+    <div class="col-sm-3 sidenav">
+			<h3 style="color:black">Top 10 Restaurants Will Go Here!</h3>
+      <!--<h4 style="color:black"><strong>Please click on a Top 10 Restaurant to Zoom In and Get More Information!!!</strong></h4>-->
+      <div class="btn-group-vertical btn-group-lg btn-block" role="group" aria-label="Basic example" id="rightbutton" style="border: 1px solid #e6e6e6; background-color: #ffffff">
+				<button type="button" id="0" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 1 <span class="glyphicon glyphicon-cutlery"></button>
+        <button type="button" id="1" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 2 <span class="glyphicon glyphicon-cutlery"></button>
+        <button type="button" id="2" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 3 <span class="glyphicon glyphicon-cutlery"></button>
+        <button type="button" id="3" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 4 <span class="glyphicon glyphicon-cutlery"></button>  
+				<button type="button" id="4" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 5 <span class="glyphicon glyphicon-cutlery"></button>
+				<button type="button" id="5" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 6 <span class="glyphicon glyphicon-cutlery"></button>
+				<button type="button" id="6" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 7 <span class="glyphicon glyphicon-cutlery"></button>
+				<button type="button" id="7" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 8 <span class="glyphicon glyphicon-cutlery"></button>
+				<button type="button" id="8" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 9 <span class="glyphicon glyphicon-cutlery"></button>
+				<button type="button" id="9" class="btn btn-outline-success" onclick="getInfo(id)" style="font-size:12px; font-weight: bold;"><span class="glyphicon glyphicon-glass"></span> Restaurant 10 <span class="glyphicon glyphicon-cutlery"></button>
+				
+			</div>
+     
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>BIG DATA FINAL PROJECT: Deepak Dwarakanath, Riddhima Narravula, Tanmay Shah</p>
+</footer>
+
+<script>
+	function getInfo(id) {
+			var a = parseInt(id)+1;
+    	document.getElementById("maptitle").innerHTML = a; //row;
+   }
+	 
+	 // Initialize map center, create map object and set up tiling
+	center = [54.526, -105.2551];
+	var mymap = L.map('mapid').setView(center, 4);
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11',
+		tileSize: 512,
+		zoomOffset: -1
+	}).addTo(mymap);
+	
+	// Center of North America popup icon.
+	L.circle(center, 500, {
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.5
+	}).addTo(mymap).bindPopup("<b>WELCOME TO OUR RESTAURANT RECOMMENDATION APPLICATION</b><br />Please enter a user id.").openPopup();
+	var popup = L.popup();
+	
+	// If you click anywhere on the map, it will give you the latitude and longitude
+	function onMapClick(e) {
+		popup
+			.setLatLng(e.latlng)
+			.setContent("You clicked the map at " + e.latlng.toString())
+			.openOn(mymap);
+	}
+
+	mymap.on('click', onMapClick);
+</script>
+</body>
+</html>
