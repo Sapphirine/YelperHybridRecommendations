@@ -109,9 +109,10 @@ def firstMap(request):
 		realuserbool = False
 		catbool = False
 		latlongbool = False
-		SQL = "SELECT * FROM `bigdata-hw01.Final_Project.recs2` WHERE user_id = {0} ORDER BY stars DESC LIMIT 10".format(default_user)
+		SQL = "SELECT * FROM `bigdata-hw01.Final_Project.recs2` WHERE user_id = '{0}' ORDER BY stars DESC LIMIT 10".format(default_user)
 		df = pandas_gbq.read_gbq(SQL)
 		df_list = df.to_dict('records')
+		print("LENGTH OF GENERIC DF: ", len(df_list))
 		
 	for df_row in df_list:
 		temp = {}
